@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Card, Form, Button } from "react-bootstrap"
+import { Card, Form, Button, Alert } from "react-bootstrap"
 import CenteredContainer from "./CenteredContainer"
 
 const AddToWallet = () => {
@@ -9,8 +9,29 @@ const AddToWallet = () => {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [curStatus, setCurStatus] = useState({})
-  const submitHandler = (e) => {
-    e.preventDefault()
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true)
+      let params = {
+        certificatePath: pubRef.current.value,
+        privateKeyPath: privRef.current.value,
+        orgRole: orgRoleRef.current.value,
+      }
+      const options = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: new URLSearchParams(params)
+      };
+
+      const resp = await fetch('localhost:4000/addToWallet', options);
+      const data = await resp.json();
+      await setCurStatus(data);
+      setLoading(false)
+    } catch (e) {
+      setError(e.message);
+      setLoading(false);
+    }
   }
 
   return (
@@ -36,8 +57,11 @@ const AddToWallet = () => {
                 Get
               </Button>
             </Form>
+             {<Alert className="mt-2" variant="success">Organisation Added Successfully</Alert>}
           </Card.Body>
         </Card>
+        {curStatus.status && <Alert variant="success">{curStatus.message}</Alert>}
+       
       </CenteredContainer>
     </>
   )

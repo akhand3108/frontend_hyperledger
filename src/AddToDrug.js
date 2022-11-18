@@ -1,6 +1,17 @@
 import { useRef, useState } from "react"
-import { Card, Form, Button } from "react-bootstrap"
+import { Card, Form, Button, Alert } from "react-bootstrap"
 import CenteredContainer from "./CenteredContainer"
+
+const drug =  {
+"productId":"\u0000org.pharma-network.com.pharmanet.drug\u0000Paracetamol\u0000001 \u0000",
+"name": "Paracetamol",
+"manufacturer": "\u0000org.pharma-network.com.pharmanet.company\u0000MAN001 \u0000",
+"manufacturingDate": "02-15-2019",
+"expiryDate": "02-15-2021",
+"owner": "\u0000org.pharma-network.com.pharmanet.company\u0000MAN001 \u0000", "shipment":"",
+"createdAt": "2022-11-17T17:29:37.852Z"
+}
+
 
 const AddToDrug = () => {
   const drugNameRef = useRef()
@@ -23,7 +34,7 @@ const AddToDrug = () => {
       <CenteredContainer>
         <Card border="primary" text>
           <Card.Body>
-            <h2 className="text-center mb-4">Add TO wallet</h2>
+            <h2 className="text-center mb-4">Add Drug</h2>
             <Form onSubmit={submitHandler}>
               <Form.Group id="orgRole">
                 <Form.Label>Organizaion Role</Form.Label>
@@ -63,7 +74,24 @@ const AddToDrug = () => {
             </Form>
           </Card.Body>
         </Card>
+      <Alert className="mt-3" variant="success">
+      <Alert.Heading>Drug Added</Alert.Heading>
+      <p>
+        Id: {drug.productId}
+        </p>
+        <p>
+          Name: {drug.name}
+        </p>
+        <p>Manufacturer:{drug.manufacturer}</p>
+        <p>Created At: {drug.createdAt}</p>
+      <hr />
+      <p className="mb-0">
+        Expiry Date : {drug.expiryDate}
+      </p>
+    </Alert>
       </CenteredContainer>
+
+      
     </>
   )
 }
